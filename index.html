@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>آموزش کسرها</title>
+<style>
+:root{--fs:1}
+body{margin:0;font-family:sans-serif;background:#f1f3fa;color:#222;font-size:calc(16px*var(--fs));padding-bottom:84px}
+body[data-s=H]{--ac:#5e35b1;--ac2:#9575cd}
+body[data-s=P]{--ac:#1e88e5;--ac2:#5c6bc0}
+body[data-s=C]{--ac:#2e9e5b;--ac2:#26a69a}
+body[data-s=T]{--ac:#ef6c00;--ac2:#ffa726}
+body[data-s=S]{--ac:#546e7a;--ac2:#78909c}
+header{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;padding:14px 12px;text-align:center;border-radius:0 0 22px 22px;box-shadow:0 3px 10px #0003}
+header h1{margin:0;font-size:1.35em}
+header small{display:block;margin-top:3px;font-size:.8em}
+main{max-width:680px;margin:auto;padding:12px}
+.sec{display:none}.sec.on{display:block}.hide{display:none}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #0002}
+.card h2{margin:0 0 10px;font-size:1.05em;color:var(--ac)}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.row button{flex:1;padding:10px 4px;border:2px solid var(--ac);background:#fff;color:var(--ac);border-radius:10px;font-size:.88em}
+.row button.on{background:var(--ac);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{border:0;border-radius:16px;padding:18px 8px;color:#fff;font-size:1em;text-align:center;box-shadow:0 3px 8px #0003}
+.tile b{display:block;font-size:2.2em;font-weight:normal}
+.tile small{display:block;opacity:.92;margin-top:4px;font-size:.78em}
+.stats{display:flex;text-align:center}.stats div{flex:1;font-size:.85em;color:#555}
+.stats b{display:block;font-size:1.8em;color:var(--ac)}
+.q{font-size:1.75em;text-align:center;padding:10px;background:#f6f8ff;border-radius:12px}
+.q.w{font-size:1.1em;line-height:2.3;text-align:right}
+.m{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fr{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;margin:0 5px;font-size:.85em;line-height:1.3}
+.fr i{font-style:normal;padding:0 6px;display:block}
+.fr i:first-child{border-bottom:2px solid currentColor;padding-bottom:1px}
+.fr i:last-child{padding-top:1px}
+input[type=text],input:not([type]){width:100%;box-sizing:border-box;padding:12px;font-size:1.2em;direction:ltr;text-align:center;border:2px solid #bbb;border-radius:10px;margin-bottom:6px}
+.go{width:100%;padding:12px;font-size:1.05em;border:0;border-radius:10px;background:#43a047;color:#fff;margin-top:6px}
+.go.b{background:var(--ac)}.go.o{background:#fb8c00}
+.ok{color:#2e7d32;font-weight:bold}.no{color:#c62828;font-weight:bold}
+.st{padding:8px 0;border-bottom:1px dashed #ccc;line-height:2.2}
+.fin{font-size:1.2em;font-weight:bold;color:var(--ac);padding-top:8px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;box-shadow:0 -2px 10px #0003;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;border:0;background:none;padding:8px 2px;font-size:.72em;color:#666}
+nav button b{display:block;font-size:1.7em;font-weight:normal}
+nav button.on{color:var(--ac);font-weight:bold;background:#0000000d}
+.board{border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #0003;border:6px solid #8d6e63;margin-bottom:12px;background:#8d6e63}
+.btb{display:flex;flex-wrap:wrap;gap:5px;padding:6px;background:#efebe9;align-items:center}
+.btb button{border:0;background:#fff;border-radius:8px;padding:7px 9px;font-size:.8em;box-shadow:0 1px 3px #0003}
+.btb button.on{background:var(--ac);color:#fff}
+.btb .sw{width:22px;height:22px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #888;padding:0}
+.btb .sw.on{box-shadow:0 0 0 3px var(--ac)}
+.btb input{width:80px;padding:0;margin:0;border:0}
+.bwrap{max-height:60vh;overflow-y:auto;background-attachment:local}
+.bt-white{background:#fff linear-gradient(#dfe6f2 1px,transparent 1px);background-size:100% 36px}
+.bt-green{background:#1d5c3a linear-gradient(#ffffff14 1px,transparent 1px);background-size:100% 36px}
+.bt-black{background:#222}
+canvas{display:block;width:100%;height:auto;touch-action:none}
+.about{line-height:2;color:#555}
+</style>
+</head>
+<body data-s="H">
+<header><h1>🧮 آموزش کسرها</h1><small>طراح: منوچهر کریمی</small></header>
+<main>
+
+<section class="sec on" id="sH">
+  <div class="card"><h2 id="hello">سلام دوست من 👋</h2>برای یادگیری کسرها یکی از بخش‌ها را انتخاب کن 👇</div>
+  <div class="grid">
+    <button class="tile" style="background:linear-gradient(135deg,#1e88e5,#5c6bc0)" data-go="P"><b>✏️</b>تمرین با تخته<small>سؤال خودکار روی تخته</small></button>
+    <button class="tile" style="background:linear-gradient(135deg,#2e9e5b,#26a69a)" data-go="C"><b>🔢</b>ماشین‌حساب<small>هر کسری را حل کن</small></button>
+    <button class="tile" style="background:linear-gradient(135deg,#ef6c00,#ffa726)" data-go="T"><b>⚖️</b>مقایسه و اعشار<small>کدام بزرگ‌تر است؟</small></button>
+    <button class="tile" style="background:linear-gradient(135deg,#546e7a,#78909c)" data-go="S"><b>⚙️</b>تنظیمات<small>تخته، اندازه، سرعت</small></button>
+  </div>
+  <div class="card" style="margin-top:12px"><h2>📊 پیشرفت تو</h2>
+    <div class="stats"><div><b id="s1">۰</b>درست</div><div><b id="s2">۰</b>کل سؤال‌ها</div><div><b id="s3">۰٪</b>درصد</div></div>
+  </div>
+  <div class="card about">طراح و برنامه‌نویس: منوچهر کریمی<br><small>نسخه ۳٫۱</small></div>
+</section>
+
+<section class="sec" id="sP">
+  <div class="card"><h2>✏️ تمرین</h2>
+    <div class="row" id="ops"><button data-v="+" class="on">جمع</button><button data-v="-">تفریق</button><button data-v="×">ضرب</button><button data-v="÷">تقسیم</button></div>
+    <div class="row" id="kinds"><button data-v="same" class="on">مخرج مساوی</button><button data-v="diff">مخرج نامساوی</button><button data-v="mixed">عدد مخلوط</button><button data-v="word">مسئله کلامی</button></div>
+    <div class="row" id="lvP"><button data-v="0">آسان</button><button data-v="1">متوسط</button><button data-v="2">سخت</button></div>
+    <div class="q" id="q"></div>
+  </div>
+  <div id="slotP"></div>
+  <div class="card">
+    <input id="ans" placeholder="جواب شما، مثل ۳/۴ یا ۲ ۱/۳">
+    <button class="go" id="chk">بررسی جواب</button>
+    <button class="go o" id="show">نمایش حل (روی تخته و زیر آن)</button>
+    <button class="go b" id="nxt">سؤال جدید</button>
+    <div style="text-align:center;margin-top:8px">درست: <b id="sc">۰</b> از <b id="tt">۰</b></div>
+  </div>
+  <div class="card hide" id="outP"><div id="fbP"></div><div id="solP"></div></div>
+</section>
+
+<section class="sec" id="sC">
+  <div class="card"><h2>🔢 ماشین‌حساب</h2>
+    <input id="ca" placeholder="کسر اول، مثل ۳ ۱/۲">
+    <div class="row" id="co"><button data-v="+" class="on">جمع</button><button data-v="-">تفریق</button><button data-v="×">ضرب</button><button data-v="÷">تقسیم</button></div>
+    <input id="cb" placeholder="کسر دوم، مثل ۵/۴">
+    <button class="go b" id="cg">حل کن و روی تخته بنویس</button>
+  </div>
+  <div id="slotC"></div>
+  <div class="card hide" id="outC"><div id="solC"></div></div>
+</section>
+
+<section class="sec" id="sT">
+  <div class="card"><h2>⚖️ مقایسه و تبدیل به اعشار</h2>
+    <input id="ta" placeholder="کسر اول، مثل ۳/۴ یا ۰٫۷۵">
+    <input id="tb" placeholder="کسر دوم (اختیاری)، مثل ۵/۶">
+    <button class="go b" id="tg">مقایسه کن</button>
+  </div>
+  <div id="slotT"></div>
+  <div class="card hide" id="outT"><div id="solT"></div></div>
+</section>
+
+<section class="sec" id="sS">
+  <div class="card"><h2>👤 اسم تو</h2><input id="sName" placeholder="اسمت را بنویس"></div>
+  <div class="card"><h2>🖍 تخته</h2>
+    رنگ تخته
+    <div class="row" id="bTh"><button data-v="white">سفید</button><button data-v="green">سبز کلاسی</button><button data-v="black">مشکی</button></div>
+    سرعت نوشتن
+    <div class="row" id="bSp"><button data-v="0">فوری</button><button data-v="1">معمولی</button><button data-v="2">آرام</button></div>
+    نوشتن خودکار سؤال روی تخته
+    <div class="row" id="bAq"><button data-v="true">روشن</button><button data-v="false">خاموش</button></div>
+  </div>
+  <div class="card"><h2>🎨 ظاهر</h2>
+    اندازه نوشته‌ها
+    <div class="row" id="bFs"><button data-v="0.9">کوچک</button><button data-v="1">متوسط</button><button data-v="1.15">بزرگ</button></div>
+    نوع شکل در حل
+    <div class="row" id="bVi"><button data-v="bar">📊 نواری</button><button data-v="pie">🍕 دایره‌ای</button></div>
+  </div>
+  <div class="card"><h2>🎯 سطح پیش‌فرض تمرین</h2>
+    <div class="row" id="lvS"><button data-v="0">آسان</button><button data-v="1">متوسط</button><button data-v="2">سخت</button></div>
+  </div>
+  <div class="card"><h2>🧹 بازنشانی</h2>
+    <button class="go o" id="rsScore">صفر کردن امتیازها</button>
+    <button class="go b" id="rsSet">برگشت تنظیمات به حالت اول</button>
+  </div>
+  <div class="card about"><h2>ℹ️ درباره</h2>آموزش کسرها، نسخه ۳<br>طراح و برنامه‌نویس: منوچهر کریمی</div>
+</section>
+
+<div id="park" class="hide">
+  <div class="board" id="boardEl">
+    <div class="btb">
+      <button data-t="pen" class="on">✏️ قلم</button><button data-t="eraser">🧽 پاک‌کن</button><button data-t="move">✋ حرکت</button>
+      <span id="sws" style="display:flex;gap:5px"></span>
+      <input type="range" id="psz" min="2" max="14" value="4">
+      <button id="bu">↩️</button><button id="bc">🗑 پاک</button><button id="bq">🔁 سؤال</button><button id="bs">📝 حل</button>
+    </div>
+    <div class="bwrap bt-white" id="bw"><canvas id="cv" width="600" height="1200"></canvas></div>
+  </div>
+</div>
+</main>
+
+<nav>
+  <button data-go="H" class="on"><b>🏠</b>خانه</button>
+  <button data-go="P"><b>✏️</b>تمرین</button>
+  <button data-go="C"><b>🔢</b>حساب</button>
+  <button data-go="T"><b>⚖️</b>مقایسه</button>
+  <button data-go="S"><b>⚙️</b>تنظیمات</button>
+</nav>
+
+<script>
+window.onerror=function(m,u,l){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;background:#c62828;color:#fff;padding:8px;z-index:99;font-size:13px;direction:ltr';d.textContent='ERROR: '+m+' (line '+l+')';document.body.appendChild(d);};
+const $=id=>document.getElementById(id);
+const gcd=(a,b)=>b?gcd(b,a%b):a,lcm=(a,b)=>a*b/gcd(a,b),rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const fa=s=>String(s).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+function setH(el,h){el.innerHTML=h;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())n.nodeValue=fa(n.nodeValue);}
+const DEF={board:'white',fs:1,autoQ:true,speed:1,vis:'bar',lvl:1,name:''};
+let S=Object.assign({},DEF),ST={ok:0,all:0};
+try{Object.assign(S,JSON.parse(localStorage.getItem('fr_set')||'{}'));Object.assign(ST,JSON.parse(localStorage.getItem('fr_st')||'{}'));}catch(e){}
+const save=()=>{try{localStorage.setItem('fr_set',JSON.stringify(S));localStorage.setItem('fr_st',JSON.stringify(ST));}catch(e){}};
+
+/* ---------- ریاضی و نمایش ---------- */
+const fr=(n,d)=>`<span class="fr"><i>${n}</i><i>${d}</i></span>`,E=h=>`<span class="m">${h}</span>`,imp=o=>o.w*o.d+o.n;
+const M=o=>o.n?(o.w||'')+fr(o.n,o.d):''+o.w,F=(n,d)=>M({w:Math.floor(n/d),n:n%d,d});
+function dec(n,d,sh){const g=gcd(n,d);let q=d/g;while(q%2==0)q/=2;while(q%5==0)q/=5;const v=n/d;
+  return q===1?String(v).replace('.','٫'):(sh?'≈ '+v.toFixed(3).replace('.','٫')+'…':'≈ '+v.toFixed(4).replace('.','٫')+' (اعشار متناوب)');}
+const decTxt=o=>`تبدیل اعشار به کسر: ${E(o.dec.s+' = '+fr(o.dec.n,o.dec.d)+' = '+M(o))}`;
+const V=r=>S.vis==='pie'?pies(r):bars(r);
+function bars(rows){let y=0,s='';
+  rows.forEach(([n,d,c,t])=>{const W=Math.max(1,Math.ceil(n/d)),bw=(300-(W-1)*8)/W,cw=bw/d;
+    s+=`<text x="0" y="${y+12}" font-size="13" fill="#333">${t}: ${n}/${d}</text>`;
+    for(let k=0;k<W;k++){const f=Math.max(0,Math.min(d,n-k*d));
+      for(let i=0;i<d;i++)s+=`<rect x="${k*(bw+8)+i*cw}" y="${y+18}" width="${cw}" height="24" fill="${i<f?c:'#fff'}" stroke="#555" stroke-width=".6"/>`;}
+    y+=52;});
+  return `<svg viewBox="0 0 300 ${y}" style="width:100%;direction:ltr">${s}</svg>`;}
+function pies(rows){let y=0,s='';
+  rows.forEach(([n,d,c,t])=>{const W=Math.min(6,Math.max(1,Math.ceil(n/d)));
+    s+=`<text x="0" y="${y+12}" font-size="13" fill="#333">${t}: ${n}/${d}</text>`;
+    for(let k=0;k<W;k++){const f=Math.max(0,Math.min(d,n-k*d)),cx0=22+k*50,cy=y+42;
+      for(let i=0;i<d;i++){const a=2*Math.PI*i/d-Math.PI/2,b=2*Math.PI*(i+1)/d-Math.PI/2;
+        const p=d===1?`M${cx0-22} ${cy}a22 22 0 1 0 44 0a22 22 0 1 0 -44 0`:`M${cx0} ${cy}L${cx0+22*Math.cos(a)} ${cy+22*Math.sin(a)}A22 22 0 0 1 ${cx0+22*Math.cos(b)} ${cy+22*Math.sin(b)}Z`;
+        s+=`<path d="${p}" fill="${i<f?c:'#fff'}" stroke="#555" stroke-width=".8"/>`;}}
+    y+=74;});
+  return `<svg viewBox="0 0 300 ${y}" style="width:100%;direction:ltr">${s}</svg>`;}
+function grid(n1,d1,n2,d2){const cs=Math.min(28,260/Math.max(d1,d2));let s='';
+  for(let c=0;c<d1;c++)for(let r=0;r<d2;r++){const a=c<n1,b=r<n2;
+    s+=`<rect x="${c*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="${a&&b?'#ab47bc':a?'#90caf9':b?'#ffcc80':'#fff'}" stroke="#555" stroke-width=".6"/>`;}
+  return `<svg viewBox="0 0 ${d1*cs} ${d2*cs}" style="display:block;margin:auto;max-width:300px;width:100%">${s}</svg>
+  <div class="st">🟦 آبی = ${E(fr(n1,d1))} (ستون‌ها) &nbsp; 🟧 نارنجی = ${E(fr(n2,d2))} (سطرها) &nbsp; 🟪 بنفش (محل برخورد) = حاصل‌ضرب</div>`;}
+
+const WHY={'+':'روی هم گذاشتن مقدارها یعنی جمع.','-':'«چقدر ماند» یعنی تفریق.','×':'«کسری از یک مقدار» یعنی ضرب.','÷':'«به چند تکه تقسیم می‌شود» یعنی تقسیم.'};
+function solve(a,b,op,word){
+  const S2=[];let n1=imp(a),d1=a.d,n2=imp(b),d2=b.d,rn,rd,v2;
+  if(word)S2.push('فهمیدن مسئله: '+WHY[op]);
+  if(a.dec)S2.push(decTxt(a));if(b.dec)S2.push(decTxt(b));
+  if(a.w)S2.push(`تبدیل عدد مخلوط اول به کسر: ${E(M(a)+' = '+fr(n1,d1))} (چون ${E(a.w+'×'+a.d+'+'+a.n+' = '+n1)})`);
+  if(b.w)S2.push(`تبدیل عدد مخلوط دوم به کسر: ${E(M(b)+' = '+fr(n2,d2))} (چون ${E(b.w+'×'+b.d+'+'+b.n+' = '+n2)})`);
+  if(op==='+'||op==='-'){
+    let L=d1;const w=op==='+'?'جمع':'تفریق';
+    if(d1===d2)S2.push(`مخرج‌ها برابرند (${d1}). پس فقط صورت‌ها را ${w} می‌کنیم و مخرج همان می‌ماند.`);
+    else{L=lcm(d1,d2);const m1=L/d1,m2=L/d2;
+      S2.push(`مخرج‌ها نابرابرند. اول باید مخرج‌ها را یکی کنیم. ک.م.م ${d1} و ${d2} برابر ${L} است.`);
+      S2.push(`کسر اول را در ${m1} ضرب می‌کنیم: ${E(fr(n1,d1)+' = '+fr(n1*m1,L))}`);
+      S2.push(`کسر دوم را در ${m2} ضرب می‌کنیم: ${E(fr(n2,d2)+' = '+fr(n2*m2,L))}`);
+      n1*=m1;n2*=m2;}
+    rn=op==='+'?n1+n2:n1-n2;rd=L;
+    S2.push(`${w} صورت‌ها: ${E(fr(n1,L)+' '+(op==='+'?'+':'−')+' '+fr(n2,L)+' = '+fr(rn,rd))}`);
+    v2=V([[n1,L,'#42a5f5','کسر اول'],[n2,L,'#ffa726','کسر دوم'],[rn,rd,'#66bb6a','حاصل']]);
+  }else if(op==='×'){
+    rn=n1*n2;rd=d1*d2;
+    S2.push(`در ضرب، صورت در صورت و مخرج در مخرج ضرب می‌شود (مخرج مشترک لازم نیست): ${E(fr(n1,d1)+' × '+fr(n2,d2)+' = '+fr(n1+'×'+n2,d1+'×'+d2)+' = '+fr(rn,rd))}`);
+    v2=(!a.w&&!b.w&&S.vis==='bar')?grid(n1,d1,n2,d2):V([[n1,d1,'#42a5f5','کسر اول'],[n2,d2,'#ffa726','کسر دوم'],[rn,rd,'#66bb6a','حاصل']]);
+  }else{
+    S2.push(`تقسیم یعنی ضرب در وارونه کسر دوم. وارونه ${E(fr(n2,d2))} می‌شود ${E(fr(d2,n2))}.`);
+    rn=n1*d2;rd=d1*n2;
+    S2.push(`${E(fr(n1,d1)+' ÷ '+fr(n2,d2)+' = '+fr(n1,d1)+' × '+fr(d2,n2)+' = '+fr(rn,rd))}`);
+    S2.push('معنی تقسیم: ببینیم کسر دوم چند بار در کسر اول جا می‌شود.');
+  }
+  const g=gcd(rn,rd),sn=rn/g,sd=rd/g;
+  if(g>1)S2.push(`ساده کردن: صورت و مخرج را بر ${g} تقسیم می‌کنیم: ${E(fr(rn,rd)+' = '+(sd===1?sn:fr(sn,sd)))}`);
+  if(sd>1&&sn>sd)S2.push(`تبدیل به عدد مخلوط: ${E(sn+' ÷ '+sd)} برابر ${Math.floor(sn/sd)} با باقی‌مانده ${sn%sd} است، پس ${E(fr(sn,sd)+' = '+F(sn,sd))}`);
+  if(op==='÷')v2=V([[n1,d1,'#42a5f5','کسر اول'],[n2,d2,'#ffa726','کسر دوم'],[sn,sd,'#66bb6a','حاصل']]);
+  S2.push(`معادل اعشاری جواب: ${E(F(sn,sd))} = ${dec(sn,sd)}`);
+  return {html:S2.map(t=>`<div class="st">${t}</div>`).join('')+`<div class="fin">✅ جواب نهایی: ${E(F(sn,sd))}</div><div style="margin-top:10px">${v2}</div>`,sn,sd};
+}
+function cmp(a,b){
+  const S2=[];[a,b].forEach(o=>{if(o&&o.dec)S2.push(decTxt(o));});
+  if(!b){const n=imp(a);S2.push(`برای تبدیل کسر به اعشار، صورت را بر مخرج تقسیم می‌کنیم: ${E(n+' ÷ '+a.d)} = ${dec(n,a.d)}`);return S2.map(t=>`<div class="st">${t}</div>`).join('');}
+  const n1=imp(a),n2=imp(b),d1=a.d,d2=b.d;
+  S2.push(`اعشار کسر اول: ${E(M(a))} = ${dec(n1,d1)}`);S2.push(`اعشار کسر دوم: ${E(M(b))} = ${dec(n2,d2)}`);
+  const L=lcm(d1,d2),x=n1*L/d1,y=n2*L/d2,sym=x>y?'>':x<y?'<':'=';
+  S2.push(d1===d2?'مخرج‌ها برابرند؛ فقط صورت‌ها را مقایسه می‌کنیم.':`مخرج مشترک (ک.م.م) برابر ${L} است: ${E(fr(n1,d1)+' = '+fr(x,L)+' ، '+fr(n2,d2)+' = '+fr(y,L))}`);
+  S2.push(`مقایسه صورت‌ها: ${E(x+' '+sym+' '+y)}`);
+  const res=x>y?'کسر اول بزرگ‌تر است':x<y?'کسر دوم بزرگ‌تر است':'دو کسر با هم برابرند';
+  return S2.map(t=>`<div class="st">${t}</div>`).join('')+`<div class="fin">✅ ${E(M(a)+' '+sym+' '+M(b))} ← ${res}</div><div style="margin-top:10px">${V([[x,L,'#42a5f5','کسر اول'],[y,L,'#ffa726','کسر دوم']])}</div>`;
+}
+function parse(s){
+  s=s.replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/[٫,]/g,'.');
+  let m=/^\s*(\d*)\.(\d+)\s*$/.exec(s);
+  if(m){const k=m[2],n=+(m[1]+k),d=Math.pow(10,k.length),g=gcd(n,d),t=n/g,q=d/g;
+    return {w:Math.floor(t/q),n:t%q,d:q,dec:{s:(m[1]||'0')+'٫'+k,n,d}};}
+  m=/^\s*(\d+)?\s*(?:(\d+)\s*\/\s*(\d+))?\s*$/.exec(s);
+  if(!m||(!m[1]&&!m[2]))return null;
+  const d=m[3]?+m[3]:1;if(!d)return null;
+  return {w:+m[1]||0,n:+m[2]||0,d};
+}
+
+/* ---------- تخته وایت‌برد ---------- */
+const TH={white:{ink:'#222222',hl:'#d81b60',ti:'#1565c0'},green:{ink:'#ffffff',hl:'#ffd54f',ti:'#80deea'},black:{ink:'#ffffff',hl:'#ffee58',ti:'#4fc3f7'}};
+const cv=$('cv'),cx=cv.getContext('2d'),BW=600,BHT=1200;
+let tool='pen',pen=TH[S.board].ink,psz=4,bY=24,wid=0,items=[],hist=[],lastBoard=S.board,BHs={};
+const getBH=()=>BHs[document.body.dataset.s]||{};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const FONT='bold 28px sans-serif';
+function tokW(t){cx.font=FONT;
+  if(typeof t==='string')return cx.measureText(fa(t)).width+(t.trim()?16:8);
+  const ww=t.w?cx.measureText(fa(t.w)).width+6:0;
+  if(!t.n)return ww||cx.measureText('۰').width;
+  return ww+Math.max(cx.measureText(fa(t.n)).width,cx.measureText(fa(t.d)).width)+16;}
+function drawTok(t,x,y,col){cx.font=FONT;cx.fillStyle=col;cx.strokeStyle=col;cx.textAlign='left';cx.textBaseline='middle';cx.direction='ltr';
+  if(typeof t==='string'){cx.fillText(fa(t),x+(t.trim()?8:4),y);return;}
+  if(!t.w&&!t.n){cx.fillText('۰',x,y);return;}
+  let xx=x;
+  if(t.w){cx.fillText(fa(t.w),xx,y);xx+=cx.measureText(fa(t.w)).width+6;}
+  if(t.n){const n=fa(t.n),d=fa(t.d),w=Math.max(cx.measureText(n).width,cx.measureText(d).width)+10;
+    cx.textAlign='center';cx.fillText(n,xx+w/2+3,y-17);cx.fillText(d,xx+w/2+3,y+19);
+    cx.lineWidth=3;cx.beginPath();cx.moveTo(xx+3,y+1);cx.lineTo(xx+w+3,y+1);cx.stroke();}
+}
+function mk(l){
+  if(l.t!==undefined){cx.font='bold 24px sans-serif';cx.direction='rtl';
+    const ws=fa(l.t).split(' ');let rows=[],c='';
+    ws.forEach(w=>{const tr=c?c+' '+w:w;if(c&&cx.measureText(tr).width>BW-50){rows.push(c);c=w;}else c=tr;});rows.push(c);
+    return {k:'t',rows,h:rows.length*38+14,c:l.c};}
+  let tw=0;l.m.forEach(t=>tw+=tokW(t));
+  return {k:'m',toks:l.m,tw,h:98,hl:l.hl};
+}
+function drawIt(it,p){
+  const T=TH[S.board];cx.save();cx.beginPath();
+  if(it.k==='t')cx.rect(BW*(1-p),it.y-6,BW*p,it.h+12);else cx.rect(0,it.y-6,BW*p,it.h+12);
+  cx.clip();
+  if(it.k==='t'){cx.font='bold 24px sans-serif';cx.direction='rtl';cx.textAlign='right';cx.textBaseline='middle';
+    cx.fillStyle=it.c==='title'?T.ti:it.c==='hl'?T.hl:T.ink;
+    it.rows.forEach((r,i)=>cx.fillText(r,BW-24,it.y+19+i*38));}
+  else{const s=Math.min(1,(BW-30)/it.tw);cx.translate((BW-it.tw*s)/2,it.y+49);cx.scale(s,s);
+    let x=0;const col=it.hl?T.hl:T.ink;it.toks.forEach(t=>{drawTok(t,x,0,col);x+=tokW(t);});}
+  cx.restore();
+}
+function redraw(){cx.clearRect(0,0,BW,BHT);items.forEach(it=>drawIt(it,1));}
+async function write(lines,clear){
+  const id=++wid;
+  if(clear){cx.clearRect(0,0,BW,BHT);bY=24;items=[];hist=[];}
+  for(const l of lines){
+    if(id!==wid)return;
+    const it=mk(l);it.y=bY;bY+=it.h;items.push(it);
+    const bw=$('bw');bw.scrollTop=Math.max(0,(it.y-100)*(bw.clientWidth/BW));
+    if(S.speed===0)drawIt(it,1);
+    else{const dur=S.speed===1?600:1100,t0=performance.now();
+      await new Promise(res=>{(function f(){if(id!==wid)return res();const p=Math.min(1,(performance.now()-t0)/dur);drawIt(it,p);p<1?requestAnimationFrame(f):res();})();});
+      await sleep(S.speed===1?250:500);}
+  }
+}
+function setBoard(s,ql,sl){
+  const o={qd:false,sd:false};
+  o.q=()=>{o.qd=true;o.sd=false;return write(ql,true);};
+  o.s=()=>{if(o.sd)return;if(!o.qd){o.qd=o.sd=true;return write(ql.concat(sl),true);}o.sd=true;return write(sl,false);};
+  BHs[s]=o;
+}
+/* قلم */
+let dr=false,lp;
+const pos=e=>{const r=cv.getBoundingClientRect(),k=BW/r.width;return{x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k};};
+function dot(a,b){cx.save();cx.globalCompositeOperation=tool==='eraser'?'destination-out':'source-over';cx.strokeStyle=pen;cx.lineWidth=tool==='eraser'?psz*5:psz;cx.lineCap=cx.lineJoin='round';cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x+.01,b.y);cx.stroke();cx.restore();}
+cv.addEventListener('pointerdown',e=>{if(tool==='move')return;e.preventDefault();cv.setPointerCapture(e.pointerId);
+  if(hist.length>=10)hist.shift();hist.push(cx.getImageData(0,0,cv.width,cv.height));dr=true;lp=pos(e);dot(lp,lp);});
+cv.addEventListener('pointermove',e=>{if(!dr)return;const p=pos(e);dot(lp,p);lp=p;});
+['pointerup','pointercancel'].forEach(v=>cv.addEventListener(v,()=>dr=false));
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-t]').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  tool=b.dataset.t;cv.style.touchAction=tool==='move'?'pan-y':'none';});
+$('psz').oninput=e=>psz=+e.target.value;
+$('bu').onclick=()=>{const i=hist.pop();if(i)cx.putImageData(i,0,0);};
+$('bc').onclick=()=>{wid++;cx.clearRect(0,0,BW,BHT);bY=24;items=[];hist=[];Object.values(BHs).forEach(o=>{o.qd=false;o.sd=false;});};
+$('bq').onclick=()=>{const h=getBH();h.q?h.q():alert('اول یک سؤال بساز');};
+$('bs').onclick=()=>{const h=getBH();h.s?h.s():alert('اول یک سؤال بساز');};
+function swatches(){
+  const cols=[TH[S.board].ink,'#e53935','#1e88e5','#43a047','#fb8c00','#8e24aa'],el=$('sws');el.innerHTML='';
+  cols.forEach(c=>{const b=document.createElement('button');b.className='sw'+(pen===c?' on':'');b.style.background=c;
+    b.onclick=()=>{pen=c;if(tool!=='pen')document.querySelector('[data-t=pen]').click();swatches();};el.appendChild(b);});
+}
+
+/* ---------- سؤال روی تخته ---------- */
+const pt=o=>o.n?(o.w?fa(o.w)+' و ':'')+fa(o.n)+'/'+fa(o.d):fa(o.w);
+const WP={
+'+':(a,b)=>`مریم ${a} کیلو سیب و رضا ${b} کیلو سیب خریدند. روی هم چند کیلو سیب خریده‌اند؟`,
+'-':(a,b)=>`در یک بشکه ${a} لیتر آب بود. ${b} لیتر از آن مصرف شد. چند لیتر آب باقی ماند؟`,
+'×':(a,b)=>`یک بطری ${a} لیتر آب‌میوه دارد. ${b} آن را نوشیدیم. چند لیتر آب‌میوه نوشیدیم؟`,
+'÷':(a,b)=>`یک نوار ${a} متر طول دارد. آن را به تکه‌های ${b} متری می‌بُریم. چند تکه می‌شود؟`};
+function qL(a,b,op,word){const L=[{t:'📝 سؤال:',c:'title'}];
+  if(word)L.push({t:WP[op](pt(a),pt(b))});
+  L.push({m:[a,op==='-'?'−':op,b,'= ؟']});return L;}
+function bst(a,b,op,word){
+  const L=[],tx=(s,c)=>L.push({t:s,c}),mt=(...m)=>L.push({m}),f=(n,d)=>({n,d}),n1=imp(a),d1=a.d,n2=imp(b),d2=b.d;
+  let x1=n1,x2=n2,rn,rd;
+  tx('✍️ حل مرحله‌به‌مرحله:','title');
+  if(word)tx('💡 '+WHY[op]);
+  [[a,'اول'],[b,'دوم']].forEach(([o,w])=>{
+    if(o.dec){tx('اعشار '+w+' را به کسر تبدیل می‌کنیم');mt(o.dec.s,'=',f(o.dec.n,o.dec.d));}
+    if(o.w&&o.n){tx('عدد مخلوط '+w+' را به کسر تبدیل می‌کنیم');mt(o,'=',f(imp(o),o.d));}
+  });
+  if(op==='+'||op==='-'){
+    let Lc=d1;
+    if(d1!==d2){Lc=lcm(d1,d2);const m1=Lc/d1,m2=Lc/d2;
+      tx(`مخرج‌ها نابرابرند. ک.م.م ${d1} و ${d2} می‌شود ${Lc}`);
+      mt(f(n1,d1),'=',f(n1*m1,Lc),'   ',f(n2,d2),'=',f(n2*m2,Lc));x1=n1*m1;x2=n2*m2;}
+    else tx('مخرج‌ها برابرند؛ فقط صورت‌ها را '+(op==='+'?'جمع':'تفریق')+' می‌کنیم');
+    rn=op==='+'?x1+x2:x1-x2;rd=Lc;
+    mt(f(x1,Lc),op==='+'?'+':'−',f(x2,Lc),'=',f(rn,rd));
+  }else if(op==='×'){rn=n1*n2;rd=d1*d2;tx('صورت در صورت و مخرج در مخرج ضرب می‌شود');mt(f(n1,d1),'×',f(n2,d2),'=',f(rn,rd));}
+  else{rn=n1*d2;rd=d1*n2;tx('تقسیم یعنی ضرب در وارونه کسر دوم');mt(f(n1,d1),'÷',f(n2,d2),'=',f(n1,d1),'×',f(d2,n2),'=',f(rn,rd));}
+  const g=gcd(rn,rd),sn=rn/g,sd=rd/g;
+  if(g>1){tx('ساده می‌کنیم؛ صورت و مخرج را بر '+g+' تقسیم می‌کنیم');mt(f(rn,rd),'=',sd===1?{w:sn,n:0,d:1}:f(sn,sd));}
+  if(sd>1&&sn>sd){tx('تبدیل به عدد مخلوط');mt(f(sn,sd),'=',{w:Math.floor(sn/sd),n:sn%sd,d:sd});}
+  tx('✅ جواب نهایی','hl');mt({w:Math.floor(sn/sd),n:sn%sd,d:sd});L[L.length-1].hl=true;
+  return L;
+}
+function cmpL(a,b){
+  const L=[{t:'⚖️ مقایسه و اعشار',c:'title'}],f=(n,d)=>({n,d}),n1=imp(a),d1=a.d;
+  if(!b){L.push({m:[a]});L.push({t:'صورت را بر مخرج تقسیم می‌کنیم'});L.push({m:[n1+' ÷ '+d1+' = '+dec(n1,d1,1)],hl:true});return L;}
+  const n2=imp(b),d2=b.d,Lc=lcm(d1,d2),x=n1*Lc/d1,y=n2*Lc/d2,sym=x>y?'>':x<y?'<':'=';
+  L.push({m:[a,'؟',b]});
+  if(d1!==d2){L.push({t:'مخرج مشترک (ک.م.م) = '+Lc});L.push({m:[f(n1,d1),'=',f(x,Lc),'   ',f(n2,d2),'=',f(y,Lc)]});}
+  L.push({t:'صورت‌ها را مقایسه می‌کنیم'});L.push({m:[x+' '+sym+' '+y]});
+  L.push({t:'معادل اعشاری:'});L.push({m:[a,'=',dec(n1,d1,1)]});L.push({m:[b,'=',dec(n2,d2,1)]});
+  L.push({t:'✅ نتیجه','c':'hl'});L.push({m:[a,sym,b],hl:true});
+  return L;
+}
+
+/* ---------- تمرین ---------- */
+let op='+',kind='same',cur,answered=false;
+function gen(){
+  const dm=[6,9,12][S.lvl],wm=[2,4,5][S.lvl];
+  const mkf=(d,w)=>({w:w?rnd(1,wm):0,n:rnd(1,d-1),d});
+  let a,b;
+  if(kind==='same'){const d=rnd(3,dm);a=mkf(d,0);b=mkf(d,0);}
+  else{const d1=rnd(2,dm);let d2;do{d2=rnd(2,dm)}while(d2===d1);
+    const w=kind==='mixed'||(kind==='word'&&S.lvl===2);a=mkf(d1,w);b=mkf(d2,w);}
+  if(kind==='word'&&op==='×')b.w=0;
+  if(op==='-'&&imp(a)*b.d<imp(b)*a.d)[a,b]=[b,a];
+  return {a,b};
+}
+function newQ(){
+  cur=gen();answered=false;const w=kind==='word',q=$('q');
+  q.className='q'+(w?' w':'');
+  setH(q,w?WP[op](E(M(cur.a)),E(M(cur.b))):E(M(cur.a)+' '+(op==='-'?'−':op)+' '+M(cur.b)+' = ?'));
+  $('ans').value='';$('outP').classList.add('hide');
+  setBoard('P',qL(cur.a,cur.b,op,w),bst(cur.a,cur.b,op,w));
+  if(document.body.dataset.s==='P'){S.autoQ?BHs.P.q():write([],true);}
+}
+function upd(){
+  $('sc').textContent=fa(ST.ok);$('tt').textContent=fa(ST.all);
+  $('s1').textContent=fa(ST.ok);$('s2').textContent=fa(ST.all);$('s3').textContent=fa(ST.all?Math.round(100*ST.ok/ST.all):0)+'٪';
+}
+function showSol(){
+  const r=solve(cur.a,cur.b,op,kind==='word');setH($('fbP'),'');setH($('solP'),r.html);$('outP').classList.remove('hide');
+  const h=getBH();h.s&&h.s();
+}
+function group(id,cb){$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  [...$(id).children].forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b.dataset.v);newQ();};}
+group('ops',v=>op=v);group('kinds',v=>kind=v);
+$('nxt').onclick=newQ;$('show').onclick=showSol;
+$('chk').onclick=()=>{
+  const u=parse($('ans').value);
+  if(!u){alert('جواب را به شکل ۳/۴ یا ۲ ۱/۳ بنویسید');return;}
+  const r=solve(cur.a,cur.b,op,kind==='word'),ok=imp(u)*r.sd===r.sn*u.d;
+  if(!answered){ST.all++;if(ok)ST.ok++;answered=true;save();upd();}
+  setH($('fbP'),ok?'<div class="ok">🎉 آفرین! درست است.</div>':'<div class="no">❌ درست نیست. حل را ببینید (یا دکمه «نمایش حل» را بزنید تا روی تخته نوشته شود):</div>');
+  setH($('solP'),r.html);$('outP').classList.remove('hide');
+};
+
+/* ---------- ماشین‌حساب و مقایسه ---------- */
+let cop='+';
+$('co').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('co').children].forEach(x=>x.classList.remove('on'));b.classList.add('on');cop=b.dataset.v;};
+$('cg').onclick=()=>{
+  const a=parse($('ca').value),b=parse($('cb').value);
+  if(!a||!b){alert('کسرها را درست وارد کنید. مثل ۳/۴ یا ۲ ۱/۳');return;}
+  if(cop==='÷'&&imp(b)===0){alert('تقسیم بر صفر ممکن نیست');return;}
+  setH($('solC'),solve(a,b,cop,false).html);$('outC').classList.remove('hide');
+  setBoard('C',qL(a,b,cop,false),bst(a,b,cop,false));BHs.C.q().then(()=>BHs.C.s());
+};
+$('tg').onclick=()=>{
+  const a=parse($('ta').value),sb=$('tb').value.trim(),b=sb?parse(sb):null;
+  if(!a||(sb&&!b)){alert('کسرها را درست وارد کنید. مثل ۳/۴ یا ۰٫۷۵');return;}
+  setH($('solT'),cmp(a,b));$('outT').classList.remove('hide');
+  const cl=cmpL(a,b);setBoard('T',cl.slice(0,2),cl.slice(2));BHs.T.q().then(()=>BHs.T.s());
+};
+
+/* ---------- ناوبری ---------- */
+function go(s){
+  document.body.dataset.s=s;
+  document.querySelectorAll('.sec').forEach(x=>x.classList.toggle('on',x.id==='s'+s));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===s));
+  const sl=$('slot'+s);
+  if(sl){sl.appendChild($('boardEl'));
+    const h=BHs[s];
+    if(s==='P'){S.autoQ&&h?h.q():write([],true);}
+    else if(h&&h.q)h.q();else write([],true);}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+
+/* ---------- تنظیمات ---------- */
+const BN=[];
+function bind(id,key,conv,cb){const el=$(id),sync=()=>[...el.children].forEach(b=>b.classList.toggle('on',String(S[key])===b.dataset.v));
+  BN.push(sync);el.onclick=e=>{const b=e.target.closest('button');if(!b)return;S[key]=conv(b.dataset.v);save();BN.forEach(f=>f());applyS();cb&&cb();};sync();}
+bind('bTh','board',String);bind('bSp','speed',Number);bind('bAq','autoQ',v=>v==='true');
+bind('bFs','fs',Number);bind('bVi','vis',String);bind('lvS','lvl',Number);bind('lvP','lvl',Number,newQ);
+function applyS(){
+  document.body.style.setProperty('--fs',S.fs);$('bw').className='bwrap bt-'+S.board;
+  if(lastBoard!==S.board){lastBoard=S.board;pen=TH[S.board].ink;redraw();}
+  swatches();$('hello').textContent=S.name?'سلام '+S.name+' 👋':'سلام دوست من 👋';
+}
+$('sName').value=S.name;$('sName').oninput=e=>{S.name=e.target.value;save();applyS();};
+$('rsScore').onclick=()=>{if(confirm('امتیازها صفر شود؟')){ST={ok:0,all:0};save();upd();}};
+$('rsSet').onclick=()=>{if(confirm('تنظیمات به حالت اول برگردد؟')){S=Object.assign({},DEF);save();$('sName').value='';BN.forEach(f=>f());applyS();}};
+
+applyS();upd();newQ();go('H');
+</script>
+</body>
+</html>
