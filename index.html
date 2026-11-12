@@ -538,5 +538,53 @@ card();
 })();
 
 </script>
+<script>
+(function(){
+let A={un:0,stars:0,box:''};try{Object.assign(A,JSON.parse(localStorage.getItem('fr_adv')||'{}'))}catch(e){}
+const sv=()=>{try{localStorage.setItem('fr_adv',JSON.stringify(A))}catch(e){}},day=()=>new Date().toISOString().slice(0,10);
+const G=[{n:'جزیره جمع',op:'+',same:1,m:'🐙'},{n:'دریاچه تفریق',op:'-',same:1,m:'🐊'},{n:'کوه ضرب',op:'×',m:'🐉'},{n:'غار تقسیم',op:'÷',m:'🦇'},{n:'قلعه جمع سخت',op:'+',m:'👹'},{n:'قله عددهای مخلوط',op:'-',mix:1,m:'👾'}];
+const css=document.createElement('style');css.textContent='body[data-s=A]{--ac:#d81b60;--ac2:#ff7043}@keyframes sh{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}.sh{animation:sh .3s}.stg{display:block;width:100%;margin-bottom:8px;padding:14px;border:0;border-radius:12px;font-size:1em;color:#fff;background:linear-gradient(135deg,#d81b60,#ff7043)}.stg[disabled]{background:#bbb}';
+document.head.appendChild(css);
+const sec=document.createElement('section');sec.className='sec';sec.id='sA';
+sec.innerHTML='<div class="card" id="aMapC"><h2>🗺️ ماجراجویی</h2><div id="aMap"></div></div><div class="card hide" id="aF"><div id="aMon" style="text-align:center;font-size:64px"></div><div id="aHud" style="text-align:center;margin:6px 0"></div><div class="q" id="aQ"></div><input id="aAns" placeholder="جواب شما، مثل ۳/۴"><button class="go" id="aGo">⚔️ حمله</button><button class="go b" id="aSay">🔊 سؤال را بخوان</button><button class="go o" id="aBack">برگشت به نقشه</button><div id="aMsg" class="st"></div></div>';
+document.querySelector('main').appendChild(sec);
+const g=document.querySelector('#sH .grid');
+const t1=document.createElement('button');t1.className='tile';t1.style.background='linear-gradient(135deg,#d81b60,#ff7043)';t1.innerHTML='<b>🗺️</b>ماجراجویی<small>با هیولاها بجنگ</small>';
+const t2=document.createElement('button');t2.className='tile';t2.style.background='linear-gradient(135deg,#fbc02d,#f57c00)';t2.innerHTML='<b>🎁</b>جعبه روزانه<small>هر روز یک جایزه</small>';
+g.append(t1,t2);
+const R=(a,b)=>rnd(a,b),vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+function map(){
+  $('aF').classList.add('hide');$('aMapC').classList.remove('hide');
+  setH($('aMap'),'<div class="st">⭐ ستاره‌های ماجراجویی: <b>'+A.stars+'</b></div>');
+  G.forEach((s,i)=>{const b=document.createElement('button');b.className='stg';b.disabled=i>A.un;
+    b.textContent=(i<A.un?'✅ ':i>A.un?'🔒 ':s.m+' ')+'مرحله '+fa(i+1)+': '+s.n;b.onclick=()=>start(i);$('aMap').appendChild(b);});
+}
+let si,hp,lv,cq;
+const sp=o=>(o.w?o.w+(o.n?' و ':''):'')+(o.n?o.n+' بر '+o.d:'');
+function mkQ(s){const d1=R(2,s.mix?7:9);let d2=d1;if(!s.same)do{d2=R(2,9)}while(d2===d1);
+  const f=(d)=>({w:s.mix?R(1,3):0,n:R(1,d-1),d});let a=f(d1),b=f(d2);
+  if(s.op==='-'&&imp(a)*b.d<imp(b)*a.d)[a,b]=[b,a];return {a,b,op:s.op};}
+function hud(){setH($('aHud'),'❤️'.repeat(lv)+'🖤'.repeat(3-lv)+' &nbsp;|&nbsp; هیولا: '+'🟥'.repeat(hp)+'⬜'.repeat(5-hp));}
+function nxt(){cq=mkQ(G[si]);setH($('aQ'),E(M(cq.a)+' '+(cq.op==='-'?'−':cq.op)+' '+M(cq.b)+' = ?'));$('aAns').value='';hud();}
+function start(i){si=i;hp=5;lv=3;$('aMon').textContent=G[i].m;$('aMsg').innerHTML='';$('aMapC').classList.add('hide');$('aF').classList.remove('hide');nxt();}
+$('aGo').onclick=function(){
+  const u=parse($('aAns').value);if(!u){alert('جواب را به شکل ۳/۴ یا ۲ ۱/۳ بنویسید');return;}
+  const r=solve(cq.a,cq.b,cq.op,false),ok=imp(u)*r.sd===r.sn*u.d,m=$('aMon');
+  m.classList.remove('sh');void m.offsetWidth;
+  if(ok){hp--;m.classList.add('sh');vib(40);setH($('aMsg'),'💥 ضربه زدی! آفرین');}
+  else{lv--;vib([120,60,120]);setH($('aMsg'),'❌ جواب درست: '+E(F(r.sn,r.sd)));}
+  hud();
+  if(hp===0){A.un=Math.max(A.un,si+1);A.stars+=3;sv();alert('🎉 هیولا شکست خورد! ۳ ستاره گرفتی ⭐');map();return;}
+  if(lv===0){alert('😢 جان‌هایت تمام شد. دوباره تلاش کن!');map();return;}
+  nxt();
+};
+$('aBack').onclick=map;
+$('aSay').onclick=()=>{try{const w={'+':'بعلاوه','-':'منهای','×':'ضربدر','÷':'تقسیم بر'}[cq.op],u=new SpeechSynthesisUtterance(sp(cq.a)+' '+w+' '+sp(cq.b));u.lang='fa-IR';speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){alert('گوشی شما صدای فارسی ندارد')}};
+t1.onclick=()=>{go('A');map();};
+t2.onclick=()=>{if(A.box===day()){alert('امروز جعبه‌ات را باز کرده‌ای. فردا دوباره بیا 🎁');return;}
+  const n=R(1,5);A.box=day();A.stars+=n;sv();vib(80);alert('🎁 جعبه باز شد! '+fa(n)+' ستاره گرفتی ⭐');};
+})();
+
+</script>
 </body>
 </html>
